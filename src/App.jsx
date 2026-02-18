@@ -19,8 +19,13 @@ function isoNow() {
   return new Date().toISOString();
 }
 function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
+
 function sameISODate(isoA, isoDate) {
   return isoA.slice(0, 10) === isoDate;
 }
@@ -357,7 +362,8 @@ export default function App() {
     }
   }, [proteinFloor, usdaApiKey, entries, roadTripMode, quickAdds]);
 
-  const today = useMemo(() => todayISO(), []);
+  const today = todayISO();
+
   const todaysEntries = useMemo(
     () => entries.filter((e) => sameISODate(e.createdAt, today)),
     [entries, today]
